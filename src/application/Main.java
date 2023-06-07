@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 * Complete the Remove Password function
 * Add Encryption/Decryption of Passwords
 * Storage of Passwords through postgres database
+* Storage of key for Encryption/Decryption
 * Add Password Generation
 * */
 

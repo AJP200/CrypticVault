@@ -36,7 +36,8 @@ public class Controller implements Initializable {
 
     String algorithm = "AES/CBC/PKCS5Padding";
     int saltLength = 16;
-    SecretKey key = application.encryption.getKeyFromPassword("password", (application.encryption.generateSalt(saltLength)).toString());
+    String salt = application.encryption.generateSalt(saltLength).toString();
+    SecretKey key = application.encryption.getKeyFromPassword("password", salt);
     IvParameterSpec ivParameterSpec = application.encryption.generateIv();
 
 
@@ -92,8 +93,7 @@ public class Controller implements Initializable {
 
                     usernameLabel.setText(returnedQuery[0]);
 
-                    SecretKey key = application.encryption.getKeyFromPassword("password", (application.encryption.generateSalt(saltLength)).toString());
-                    passwordLabel.setText(application.encryption.decrypt(algorithm,returnedQuery[1], key,application.encryption.generateIv()));
+                    passwordLabel.setText(application.encryption.decrypt(algorithm,returnedQuery[1], key, ivParameterSpec));
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 } catch (InvalidAlgorithmParameterException e) {
@@ -103,8 +103,6 @@ public class Controller implements Initializable {
                 } catch (IllegalBlockSizeException e) {
                     throw new RuntimeException(e);
                 } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException(e);
-                } catch (InvalidKeySpecException e) {
                     throw new RuntimeException(e);
                 } catch (BadPaddingException e) {
                     throw new RuntimeException(e);
@@ -174,6 +172,7 @@ public class Controller implements Initializable {
             } catch (IllegalBlockSizeException ex) {
                 throw new RuntimeException(ex);
             }
+
             System.out.println("Entered password: " + name);
         });
 
